@@ -1,25 +1,32 @@
-#init
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from keras.utils import to_categorical
-import pickle 
+from AI_model_prepare import  data_study, data_test, target_study_cat, target_test_cat
+from keras.layers import Dense
+from keras.models import Sequential
+import numpy as np
+import matplotlib.pyplot as plt
 
+model = Sequential([
+    Dense(256, activation = 'relu', input_shape = (15, )),
+    Dense(128, activation = 'relu'),
+    Dense(12, activation = 'softmax')
+])
 
-data_frame = pd.read_csv('dataset.csv')
-print(data_frame.keys())
+model.summary()
 
-data = data_frame.drop(columns = ['clothing_advice','label']).values
-target = data_frame['label'].values
-print(target)
-vectorizer = TfidfVectorizer(max_features = 1000)
+model.compile(
+    optimizer = 'adam',
+    loss = 'categorical_crossentropy',
+    metrics = ['accuracy']
+)
 
-data_scaled = vectorizer.fit_transform(data).toarray()
+learn = model.fit(
+    data_study, target_study_cat,
+    epochs = 100,
+    batch_size = 20,
+    validation_split = 0.1,
+    verbose = 1
+)
 
-data_study, data_test, target_study, target_test = train_test_split(data_scaled, target, test_size = 0.2, random_state = 42, stratify = target)
+test_loss, test_acc = model.evaluate(data_test, target_test_cat, verbose = 0 )
+print(f'Test loss: {test_loss:.4f}\n'
+      f'Test acc: {test_acc:.4f} ({test_acc * 100:.1f}%)\n')
 
-target_study_cat = to_categorical(target_study, num_classes = 12)
-target_test_cat = to_categorical(target_test, num_classes = 12)
-
-with open ('vectorizer.pkl', 'wb') as file:
-    pickle.dump(vectorizer, file)
