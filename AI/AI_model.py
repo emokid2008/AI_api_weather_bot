@@ -75,3 +75,17 @@ plt.savefig('model_fit.png', dpi = 150, bbox_inches = 'tight' )
 # conf_matrix
 conf_matrix = confusion_matrix(target_test[:50], predict)
 print(f'Conf_matrix:\n {conf_matrix}')
+
+# Частые ошибки
+print(f'Частые ошибки:')
+errors = []
+
+for i in range(10):
+    for j in range(10):
+        if i != j and conf_matrix[i, j] > 0:
+            errors.append((i, j, conf_matrix[i, j]))
+
+errors.sort(key = lambda x: x[2], reverse = True)
+for true, pred, errors in errors[:50]:
+    print(f'{true} -> {pred}: {errors} раз')
+
