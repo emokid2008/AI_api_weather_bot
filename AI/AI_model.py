@@ -3,6 +3,7 @@ from keras.layers import Dense
 from keras.models import Sequential
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 model = Sequential([
     Dense(256, activation = 'relu', input_shape = (15, )),
@@ -70,3 +71,7 @@ loss.grid(True, alpha = 0.3)
 
 plt.tight_layout()
 plt.savefig('model_fit.png', dpi = 150, bbox_inches = 'tight' )
+
+# conf_matrix
+conf_matrix = confusion_matrix(target_test[:50], predict)
+print(f'Conf_matrix:\n {conf_matrix}')
