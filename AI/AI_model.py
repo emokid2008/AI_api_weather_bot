@@ -1,4 +1,4 @@
-from AI_model_prepare import  data_study, data_test, target_study_cat, target_test_cat
+from AI_model_prepare import  data_study, data_test, target_study_cat, target_test_cat, target_test
 from keras.layers import Dense
 from keras.models import Sequential
 import numpy as np
@@ -30,3 +30,18 @@ test_loss, test_acc = model.evaluate(data_test, target_test_cat, verbose = 0 )
 print(f'Test loss: {test_loss:.4f}\n'
       f'Test acc: {test_acc:.4f} ({test_acc * 100:.1f}%)\n')
 
+#predict 
+predictions = model.predict(data_test[:50], verbose = 0)
+predict = np.argmax(predictions, axis = 1)
+
+for i in range(50):
+    pred = np.argmax(predictions[i])
+    true = target_test[i]
+    conf = predictions[i][pred]
+
+    result = 'Верно' if pred == true else 'Неверно'
+
+    print(f'{result}:\n'
+          f'Предсказано: {pred}\n'
+          f'Верно: {true}\n'
+          f'Уверенность: {conf*100:.1f}\n')
