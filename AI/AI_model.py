@@ -45,3 +45,28 @@ for i in range(50):
           f'Предсказано: {pred}\n'
           f'Верно: {true}\n'
           f'Уверенность: {conf*100:.1f}\n')
+    
+# График обучения 
+fig, (acc, loss) = plt.subplots(1, 2, figsize = (14, 5))
+
+# Acc
+acc.plot(learn.history['accuracy'], label = 'Точность обучение', linewidth = 2)
+acc.plot(learn.history['val_accuracy'], label = 'Точность после обучения', linewidth = 2)
+acc.set_title('Точность модели', fontsize = 14, fontweight = 'bold')
+acc.set_xlabel('Эпохи')
+acc.set_ylabel('Точность')
+acc.legend()
+acc.grid(True, alpha = 0.3)
+
+
+# loss
+loss.plot(learn.history['loss'], label = 'Потери изучения', linewidth = 2)
+loss.plot(learn.history['val_loss'], label = 'Потери после изучения', linewidth = 2)
+loss.set_title('Потери модели', fontsize = 14, fontweight = 'bold')
+loss.set_xlabel('Эпохи')
+loss.set_ylabel('Потери')
+loss.legend()
+loss.grid(True, alpha = 0.3)
+
+plt.tight_layout()
+plt.savefig('model_fit.png', dpi = 150, bbox_inches = 'tight' )
