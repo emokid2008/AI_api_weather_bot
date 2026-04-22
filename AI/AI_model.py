@@ -4,6 +4,7 @@ from keras.models import Sequential
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 model = Sequential([
     Dense(256, activation = 'relu', input_shape = (15, )),
@@ -74,7 +75,7 @@ plt.savefig('model_fit.png', dpi = 150, bbox_inches = 'tight' )
 
 # conf_matrix
 conf_matrix = confusion_matrix(target_test[:50], predict)
-print(f'Conf_matrix:\n {conf_matrix}')
+print(f'Conf_matrix:\n {conf_matrix}\n')
 
 # Частые ошибки
 print(f'Частые ошибки:')
@@ -89,3 +90,21 @@ errors.sort(key = lambda x: x[2], reverse = True)
 for true, pred, errors in errors[:50]:
     print(f'{true} -> {pred}: {errors} раз')
 
+# График conf_matrix
+fig, graph = plt.subplots(figsize = (10, 8))
+
+sns.heatmap(conf_matrix, 
+            annot = True,
+            fmt = 'd',
+            ax = graph,
+            cmap = 'RdPu',
+            linewidths = 0.2,
+            linecolor = 'gray',
+            xticklabels = range(10),
+            yticklabels = range(10))
+graph.set_title('Confusion matrix', fontsize = 16, fontweight = 'bold')
+graph.set_xlabel('Предсказания', fontsize = 12)
+graph.set_ylabel('Верно', fontsize = 12)
+
+plt.tight_layout()
+plt.savefig('Confusion_matrix.png', dpi = 150, bbox_inches = 'tight' )
