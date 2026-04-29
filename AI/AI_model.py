@@ -153,4 +153,33 @@ plt.tight_layout()
 plt.savefig('Worst_error.png', dpi = 150, bbox_inches = 'tight' )
 plt.show()
 
+# Model 2 
+model_2 = Sequential([
+    Dense(512, activation = 'relu', input_shape = (15, )),
+    Dropout(0.3),
+    Dense(256, activation = 'relu' ),
+    Dropout(0.3),
+    Dense(128, activation = 'relu' ),
+    Dropout(0.3),
+    Dense(12, activation = 'softmax')
+])
  
+model_2.summary()
+
+model_2.compile(
+    optimizer = 'adam',
+    loss = 'categorical_crossentropy',
+    metrics = ['accuracy']
+)
+
+learn_2 = model_2.fit(
+    data_study, target_study_cat,
+    epochs = 100,
+    batch_size = 300,
+    validation_split = 0.1,
+    verbose = 1
+) 
+
+test_acc_2 = model.evaluate(data_test, target_test_cat, verbose = 0 )
+print(f'Model 2:'
+    f'Test acc: {test_acc:.4f} ({test_acc * 100:.1f}%)\n')
