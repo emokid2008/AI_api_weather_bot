@@ -4,6 +4,7 @@ from keras.models import Sequential
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from keras.callbacks import EarlyStopping
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 
@@ -33,11 +34,19 @@ model.compile(
     metrics = ['accuracy']
 )
 
+early_stop = EarlyStopping(
+    monitor = 'val_loss',
+    patience = 5,
+    restore_best_weights = True,
+    verbose = 1
+)
+
 learn = model.fit(
     data_study, target_study_cat,
     epochs = 100,
     batch_size = 300,
     validation_split = 0.1,
+    callbacks = [early_stop],
     verbose = 1
 )
 
@@ -177,6 +186,7 @@ learn_2 = model_2.fit(
     epochs = 100,
     batch_size = 300,
     validation_split = 0.1,
+    callbacks = [early_stop],
     verbose = 1
 ) 
 
