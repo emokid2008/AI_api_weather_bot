@@ -1,5 +1,5 @@
 from AI_model_prepare import  data_study, data_test, target_study_cat, target_test_cat, target_test
-from keras.layers import Dense
+from keras.layers import Dense, Dropout, BatchNormalization, Activation
 from keras.models import Sequential
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,8 +20,8 @@ clothing_advice = ['hot_summer',
 
 
 model = Sequential([
-    Dense(256, activation = 'relu', input_shape = (15, )),
-    Dense(128, activation = 'relu'),
+    Dense(512, activation = 'relu', input_shape = (15, )),
+    Dense(256, activation = 'relu' ),
     Dense(12, activation = 'softmax')
 ])
 
@@ -36,7 +36,7 @@ model.compile(
 learn = model.fit(
     data_study, target_study_cat,
     epochs = 100,
-    batch_size = 20,
+    batch_size = 300,
     validation_split = 0.1,
     verbose = 1
 )
@@ -141,7 +141,7 @@ for index, err_index in enumerate(worst_errors):
     pred_label = clothing_advice[predict[err_index]]
     cloth_index = clothing_advice.index(pred_label)
     confidence = predictions[err_index][cloth_index] * 100
-    rect = mpatches.FancyBboxPatch((col + 0.05, rows - row - 0.95), 0.9, 0.9, 'round, pad = 0.02', facecolor = 'gray', edgecolor = 'black', linewidth = 1)
+    rect = mpatches.FancyBboxPatch((col + 0.05, rows - row - 0.95), 0.9, 0.9, 'round, pad = 0.02', facecolor = 'pink', edgecolor = 'black', linewidth = 1)
     ax.add_patch(rect)
 
     ax.text(x, y, f'Верно: {true_label},\n Предсказано: {pred_label},\n  ({confidence:.0f}%)',
@@ -152,3 +152,5 @@ plt.suptitle('10 уверенных ошибок', fontsize = 14, fontweight = '
 plt.tight_layout()
 plt.savefig('Worst_error.png', dpi = 150, bbox_inches = 'tight' )
 plt.show()
+
+ 
