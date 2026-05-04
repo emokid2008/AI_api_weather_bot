@@ -190,6 +190,47 @@ learn_2 = model_2.fit(
     verbose = 1
 ) 
 
-test_acc_2 = model.evaluate(data_test, target_test_cat, verbose = 0 )
+test_acc_2 = model_2.evaluate(data_test, target_test_cat, verbose = 0 )[1]
+print(test_acc_2)
 print(f'Model 2:'
-    f'Test acc: {test_acc:.4f} ({test_acc * 100:.1f}%)\n')
+    f'Test acc: {test_acc_2:.4f} ({test_acc_2 * 100:.1f}%)\n')
+
+
+# Model 3
+model_3 = Sequential([
+    Dense(512, input_shape = (15, )),
+    BatchNormalization(),
+    Activation('relu'),
+    Dropout(0.3),
+    Dense(256),
+    BatchNormalization(),
+    Activation('relu'),
+    Dropout(0.3),
+    Dense(128, activation = 'relu' ),
+    BatchNormalization(),
+    Activation('relu'),
+    Dropout(0.3),
+    Dense(12, activation = 'softmax')
+])
+ 
+model_3.summary()
+
+model_3.compile(
+    optimizer = 'adam',
+    loss = 'categorical_crossentropy',
+    metrics = ['accuracy']
+)
+
+learn_3 = model_3.fit(
+    data_study, target_study_cat,
+    epochs = 100,
+    batch_size = 300,
+    validation_split = 0.1,
+    callbacks = [early_stop],
+    verbose = 1
+) 
+
+test_acc_3 = model_3.evaluate(data_test, target_test_cat, verbose = 0 )[1]
+print(test_acc_3)
+print(f'Model 3:'
+    f'Test acc: {test_acc_3:.4f} ({test_acc_3 * 100:.1f}%)\n')
