@@ -192,7 +192,7 @@ learn_2 = model_2.fit(
 
 test_acc_2 = model_2.evaluate(data_test, target_test_cat, verbose = 0 )[1]
 print(test_acc_2)
-print(f'Model 2:'
+print(f'Model 2: '
     f'Test acc: {test_acc_2:.4f} ({test_acc_2 * 100:.1f}%)\n')
 
 
@@ -232,5 +232,20 @@ learn_3 = model_3.fit(
 
 test_acc_3 = model_3.evaluate(data_test, target_test_cat, verbose = 0 )[1]
 print(test_acc_3)
-print(f'Model 3:'
+print(f'Model 3: '
     f'Test acc: {test_acc_3:.4f} ({test_acc_3 * 100:.1f}%)\n')
+
+# Сравнение моделей 
+
+mode_compare = [
+    ('Модель 1', test_acc, model.count_params()),
+    ('Модель 2', test_acc_2, model_2.count_params()),
+    ('Модель 3', test_acc_3, model_3.count_params())
+]
+
+print(f'\n{'Модель:':<30} {'Test Accuracy:':<15} {'Кол-во параметров:':<15}')
+for name, acc, params in mode_compare:
+    print(f'{name:<30} {acc:.3f} ({acc * 100:.1f}%) {params:>15}\n') 
+
+best_model = max(mode_compare, key = lambda x: x[1])[0]
+print(f'Лучшая модель: {best_model}')
