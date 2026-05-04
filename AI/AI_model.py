@@ -249,3 +249,56 @@ for name, acc, params in mode_compare:
 
 best_model = max(mode_compare, key = lambda x: x[1])[0]
 print(f'Лучшая модель: {best_model}')
+
+# График сравнения моделей
+fig_1, axes = plt.subplots(1, 2, figsize = (15, 5))
+ax = axes[0]
+names = [param[0] for param in mode_compare]
+accs = [param[1] for param in mode_compare]
+colors = ['#cf74b5', "#5F7DBE", "#5c975c"]
+
+bars = ax.bar(range(3), accs, color = colors, edgecolor = 'black', linewidth = 2)
+ax.set_xticks(range(3))
+ax.set_xticklabels(names, rotation = 15, ha = 'right')
+ax.set_ylabel('Test accuracy')
+ax.set_title('Acc compare', fontweight = 'bold')
+ax.set_ylim([0.6, 1])
+ax.grid(axis = 'y', alpha = 0.3)
+
+for bar, acc in zip(bars, accs):
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2.,
+        height + 0.001,
+        f'{acc:.4f}',
+        ha = 'center',
+        va = 'bottom',
+        fontweight = 'bold'
+    )
+
+ax = axes[1]
+names = [param[0] for param in mode_compare]
+params = [param[2] for param in mode_compare]
+colors = ['skyblue', 'lightgreen', 'lightcoral']
+
+bars = ax.bar(range(3), params, color = colors, edgecolor = 'black', linewidth = 2)
+ax.set_xticks(range(3))
+ax.set_xticklabels(names, rotation = 15, ha = 'right')
+ax.set_ylabel('Params')
+ax.set_title('Param compare', fontweight = 'bold')
+ax.set_ylim([140000, 180000])
+ax.grid(axis = 'y', alpha = 0.3)
+
+for bar, acc in zip(bars, accs):
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2.,
+        height + 0.001,
+        f'{acc:.4f}',
+        ha = 'center',
+        va = 'bottom',
+        fontweight = 'bold'
+    )
+
+plt.tight_layout()
+plt.savefig('Model_compare.png', dpi = 150, bbox_inches = 'tight' )
