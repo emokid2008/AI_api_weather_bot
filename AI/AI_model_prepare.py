@@ -18,8 +18,6 @@ vectorizer = TfidfVectorizer(max_features = 1000)
 
 data_scaled = vectorizer.fit_transform(data_frame['main']).toarray()
 data = np.hstack((data_scaled, data))
-print(data_scaled)
-print(data)
 
 data_study, data_test, target_study, target_test = train_test_split(data, target, test_size = 0.2, random_state = 42, stratify = target)
 print(data_study.shape, target_study.shape)
