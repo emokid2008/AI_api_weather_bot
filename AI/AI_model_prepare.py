@@ -30,4 +30,4 @@ target_study_cat = to_categorical(target_study, num_classes = 12)
 target_test_cat = to_categorical(target_test, num_classes = 12)
 
 with open ('vectorizer.pkl', 'wb') as file:
-    pickle.dump(vectorizer, file)
+    pickle.dump(vectorizer, file)    
