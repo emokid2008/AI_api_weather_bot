@@ -1,5 +1,7 @@
 #init
 import pickle
+import datetime
+from datetime import datetime as dt
 from keras.models import load_model
 import requests
 import telebot
@@ -37,4 +39,16 @@ def getCity(message):
         temp_min = round(wheatherData['main']['temp_min'])
         wind = round(wheatherData['wind']['speed'])
         clouds = round(wheatherData['clouds']['all'])
-      #доделать это + картинки + бейсик мессендж 
+      #+ картинки + бейсик мессендж 
+
+        timezone = wheatherData['timezone'] / 3600 
+        if timezone > 0:
+            timezoneznak = '+'
+        else:
+            timezoneznak = '-' 
+        offset = datetime.timezone(datetime.timedelta(hours = timezone))
+        sunrise = dt.fromtimestamp(wheatherData['sys']['sunrise'], offset).strftime('%H:%M')     
+        sunset = dt.fromtimestamp(wheatherData['sys']['sunset'], offset).strftime('%H:%M') 
+
+        date = dt.now(offset).strftime('%d %B %Y')
+        dateTime = dt.now(offset).strftime('%H:%M') 
