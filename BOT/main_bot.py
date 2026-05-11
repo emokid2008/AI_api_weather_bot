@@ -31,7 +31,7 @@ def getCity(message):
     if dataRes.status_code == 200:
         wheatherData = dataRes.json()
 
-        main = wheatherData['wheather'][0]['main']
+        main = wheatherData['wheather'][0]['description']
         temp = round(wheatherData['main']['temp'])
         pressure = round(wheatherData['main']['pressure'])
         humid = round(wheatherData['main']['humidity'])
@@ -52,3 +52,20 @@ def getCity(message):
 
         date = dt.now(offset).strftime('%d %B %Y')
         dateTime = dt.now(offset).strftime('%H:%M') 
+
+        messageText = f'Отлично, вот погода в вашем городе:\n' \
+                      f'📅Дата: {date}\n' \
+                      f'⏰Время: {dateTime}\n' \
+                      f'🏡Город: {city} - {main}\n' \
+                      f'🌡Температура: {temp}℃\n' \
+                      f'🔺Максимальная температура: {temp_max}\n' \
+                      f'🔻Минимальная температура: {temp_min}\n' \
+                      f'📍Давление: {pressure}\n' \
+                      f'💦Влажность: {humid}\n' \
+                      f'💨Ветер: {wind}км/ч\n' \
+                      f'☁Облака: {clouds}\n' \
+                      f'🌇Рассвет {sunrise}\n' \
+                      f'🌆Закат: {sunset}'
+        
+        bot.send_message(message.chat.id, messageText)
+                      
