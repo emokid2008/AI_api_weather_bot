@@ -1,6 +1,7 @@
 #init
 import pickle
 from keras.models import load_model
+import requests
 import telebot
 bot = telebot.TeleBot('')
 model = load_model('./AI/Ai_model.h5')
@@ -22,6 +23,18 @@ def getCity(message):
 
     global urlParams
     city = message.text
-    url = 'https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}'
+    url = f'https://api.openweathermap.org/data/2.5/weather?q='+city+'&units='+urlParams['units']+'&lang='+urlParams['lang']+'&appid='+urlParams['key']
 
-    
+    dataRes = requests.get(url)
+    if dataRes.status_code == 200:
+        wheatherData = dataRes.json()
+
+        main = wheatherData['wheather'][0]['main']
+        temp = round(wheatherData['main']['temp'])
+        pressure = round(wheatherData['main']['pressure'])
+        humid = round(wheatherData['main']['humidity'])
+        temp_max = round(wheatherData['main']['temp_max'])
+        temp_min = round(wheatherData['main']['temp_min'])
+        wind = round(wheatherData['wind']['speed'])
+        clouds = round(wheatherData['clouds']['all'])
+      #доделать это + картинки + бейсик мессендж 
