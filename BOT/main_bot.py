@@ -5,9 +5,9 @@ from datetime import datetime as dt
 from keras.models import load_model
 import requests
 import telebot
-bot = telebot.TeleBot('')
-model = load_model('./AI/Ai_model.h5')
-with open('vectorizer.pkl', 'rb') as file:
+bot = telebot.TeleBot('8568446263:AAEUHknE74efhDojYC3tf1Gehs2Y5F7GBAs')
+model = load_model('../AI/Ai_model.h5')
+with open('../AI/vectorizer.pkl', 'rb') as file:
     vectorizer = pickle.load(file)
 
 urlParams = {
@@ -31,7 +31,7 @@ def getCity(message):
     if dataRes.status_code == 200:
         wheatherData = dataRes.json()
 
-        main = wheatherData['wheather'][0]['description']
+        main = wheatherData['weather'][0]['description']
         temp = round(wheatherData['main']['temp'])
         pressure = round(wheatherData['main']['pressure'])
         humid = round(wheatherData['main']['humidity'])
@@ -39,7 +39,7 @@ def getCity(message):
         temp_min = round(wheatherData['main']['temp_min'])
         wind = round(wheatherData['wind']['speed'])
         clouds = round(wheatherData['clouds']['all'])
-      #+ картинки + бейсик мессендж 
+        id = wheatherData['weather'][0]['id']
 
         timezone = wheatherData['timezone'] / 3600 
         if timezone > 0:
@@ -52,6 +52,62 @@ def getCity(message):
 
         date = dt.now(offset).strftime('%d %B %Y')
         dateTime = dt.now(offset).strftime('%H:%M') 
+
+        if id >= 200 and id <= 211:
+            imageUrl = '../картинки/дождь и гроза.jpg'
+            image = open(imageUrl, 'rb')
+
+        if id >= 212 and id <= 232:
+            imageUrl = '../картинки/просто гроза.jpg'
+            image = open(imageUrl, 'rb')    
+
+        if id >= 300 and id <= 321:
+            imageUrl = '../картинки/дождь.jpg'
+            image = open(imageUrl, 'rb')    
+
+        if id >= 500 and id <= 510:
+            imageUrl = '../картинки/сильный дождик.jpg'
+            image = open(imageUrl, 'rb')
+
+        if id == 511:
+            imageUrl = '../картинки/снег с дождем.jpg'
+            image = open(imageUrl, 'rb')    
+
+        if id >= 511 and id <= 531:
+            imageUrl = '../картинки/сильный дождик.jpg'
+            image = open(imageUrl, 'rb')    
+ 
+        if id >= 600 and id <= 622:
+            imageUrl = '../картинки/снег.jpg'
+            image = open(imageUrl, 'rb')  
+        
+        if id >= 701 and id <= 741:
+            imageUrl = '../картинки/туман.jpg'
+            image = open(imageUrl, 'rb')      
+        
+        if id >= 751 and id <= 781:
+            imageUrl = '../картинки/ветер.jpg'
+            image = open(imageUrl, 'rb')  
+
+        if id == 800:
+            imageUrl = '../картинки/солнечно.jpg'
+            image = open(imageUrl, 'rb')      
+
+        if id == 801:
+            imageUrl = '../картинки/микро облака.jpg'
+            image = open(imageUrl, 'rb')      
+
+        if id == 802:
+            imageUrl = '../картинки/50проц облака.jpg'
+            image = open(imageUrl, 'rb')      
+
+        if id == 803:
+            imageUrl = '../картинки/75 проц облака.jpg'
+            image = open(imageUrl, 'rb')       
+
+        if id == 804:
+            imageUrl = '../картинки/облака сильные.jpg'
+            image = open(imageUrl, 'rb')                     
 
         messageText = f'Отлично, вот погода в вашем городе:\n' \
                       f'📅Дата: {date}\n' \
@@ -66,6 +122,9 @@ def getCity(message):
                       f'☁Облака: {clouds}\n' \
                       f'🌇Рассвет {sunrise}\n' \
                       f'🌆Закат: {sunset}'
-        
-        bot.send_message(message.chat.id, messageText)
+        bot.send_photo(message.chat.id, image, caption = messageText, parse_mode = 'html')
+    else:
+        bot.send_message(message.chat.id, 'Такого города нет!')
+        bot.register_next_step_handler(message, getCity)
                       
+bot.infinity_polling()                      
