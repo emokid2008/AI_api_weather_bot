@@ -198,7 +198,7 @@ print(f'Model 2: '
 
 # Model 3
 model_3 = Sequential([
-    Dense(512, input_shape = (13, )),
+    Dense(512, input_shape = (13    , )),
     BatchNormalization(),
     Activation('relu'),
     Dropout(0.3),
