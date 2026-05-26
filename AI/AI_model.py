@@ -21,9 +21,9 @@ clothing_advice = ['hot_summer',
 
 
 model = Sequential([
-    Dense(512, activation = 'relu', input_shape = (15, )),
+    Dense(512, activation = 'relu', input_shape = (13, )),
     Dense(256, activation = 'relu' ),
-    Dense(12, activation = 'softmax')
+    Dense(10, activation = 'softmax')
 ])
 
 model.summary()
@@ -164,13 +164,13 @@ plt.show()
 
 # Model 2 
 model_2 = Sequential([
-    Dense(512, activation = 'relu', input_shape = (15, )),
+    Dense(512, activation = 'relu', input_shape = (13, )),
     Dropout(0.3),
     Dense(256, activation = 'relu' ),
     Dropout(0.3),
     Dense(128, activation = 'relu' ),
     Dropout(0.3),
-    Dense(12, activation = 'softmax')
+    Dense(10, activation = 'softmax')
 ])
  
 model_2.summary()
@@ -198,7 +198,7 @@ print(f'Model 2: '
 
 # Model 3
 model_3 = Sequential([
-    Dense(512, input_shape = (15, )),
+    Dense(512, input_shape = (13    , )),
     BatchNormalization(),
     Activation('relu'),
     Dropout(0.3),
@@ -210,7 +210,7 @@ model_3 = Sequential([
     BatchNormalization(),
     Activation('relu'),
     Dropout(0.3),
-    Dense(12, activation = 'softmax')
+    Dense(10, activation = 'softmax')
 ])
  
 model_3.summary()
@@ -302,3 +302,5 @@ for bar, acc in zip(bars, accs):
 
 plt.tight_layout()
 plt.savefig('Model_compare.png', dpi = 150, bbox_inches = 'tight' )
+
+model.save('Ai_model.h5')

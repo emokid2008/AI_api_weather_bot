@@ -11,7 +11,7 @@ import numpy as np
 data_frame = pd.read_csv('dataset.csv')
 print(data_frame.keys())
 
-data = data_frame.drop(columns = ['main','clothing_advice','label']).values
+data = data_frame.drop(columns = ['main','clothing_advice','label', 'sunset','sunrise']).values
 target = data_frame['label'].values
 print(target)
 vectorizer = TfidfVectorizer(max_features = 1000)
@@ -26,8 +26,15 @@ scaler = StandardScaler()
 data_study = scaler.fit_transform(data_study)
 data_test = scaler.transform(data_test)
 
-target_study_cat = to_categorical(target_study, num_classes = 12)
-target_test_cat = to_categorical(target_test, num_classes = 12)
+target_study_cat = to_categorical(target_study, num_classes = 10)
+target_test_cat = to_categorical(target_test, num_classes = 10)
+print(data_study)
+print(data_test)
+print(target_study)
+print(target_test)
 
 with open ('vectorizer.pkl', 'wb') as file:
     pickle.dump(vectorizer, file)    
+
+with open ('scaler.pkl', 'wb') as file:
+    pickle.dump(scaler, file)        
