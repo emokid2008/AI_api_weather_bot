@@ -87,7 +87,7 @@ def getCity(message):
         dateTime = dt.now(offset).strftime('%H:%M') 
 
         if id >= 200 and id <= 211:
-            imageUrl = '../картинки/дождь и гроза.jpg'
+            imageUrl = 'картинки/дождь и гроза.jpg'
             image = open(imageUrl, 'rb')
 
         if id >= 212 and id <= 232:
